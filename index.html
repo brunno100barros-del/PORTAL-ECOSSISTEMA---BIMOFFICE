@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIMOFFICE · Tecnologia e inteligência para engenharia</title>
+<meta name="description" content="Portal central do ecossistema BIMOFFICE: aplicativos de engenharia independentes em um só ponto de acesso.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="assets/bimoffice-marca.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<script>
+/* Define o tema antes da primeira pintura (evita piscar): escolha salva > sistema. */
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("bimoffice-tema"); } catch (e) {}
+  if (t !== "dark" && t !== "light") {
+    t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  document.documentElement.setAttribute("data-theme", t);
+})();
+</script>
+</head>
+<body>
+<div class="fundo" aria-hidden="true"></div>
+
+<header class="topo">
+  <div class="topo__marca">
+    <img class="logo" src="assets/bimoffice-marca.svg" width="44" height="44" alt="">
+    <div class="topo__nomes">
+      <span class="topo__nome" data-portal-nome>BIMOFFICE</span>
+      <span class="topo__sub" id="subtitulo">Ecossistema</span>
+    </div>
+  </div>
+  <p class="topo__frase" id="frase">Tecnologia e inteligência para engenharia</p>
+  <button class="tema" id="tema-botao" type="button" aria-pressed="false" aria-label="Mudar tema"></button>
+</header>
+
+<main class="principal">
+  <section class="boas-vindas" aria-labelledby="titulo">
+    <p class="eyebrow" id="saudacao">Olá</p>
+    <h1 id="titulo">Bem-vindo ao ecossistema <span class="destaque" data-portal-nome>BIMOFFICE</span></h1>
+    <p class="boas-vindas__texto">Você está no ponto de entrada do ecossistema BIMOFFICE. Escolha um aplicativo para continuar: cada um funciona de forma independente, em seu próprio endereço.</p>
+  </section>
+
+  <section class="apps" id="apps" aria-label="Aplicativos do ecossistema">
+    <noscript><p class="aviso">Este portal precisa de JavaScript para listar os aplicativos.</p></noscript>
+  </section>
+</main>
+
+<footer class="rodape">
+  <img src="assets/bimoffice-marca.svg" width="20" height="20" alt="">
+  <span><strong data-portal-nome>BIMOFFICE</strong> · <span id="rodape-texto"></span></span>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
