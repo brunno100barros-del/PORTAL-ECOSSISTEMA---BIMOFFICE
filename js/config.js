@@ -12,7 +12,7 @@
      id            identificador único, sem espaços (usado também para escolher o ícone).
      nome          nome exibido no cartão.
      descricao     texto curto exibido no cartão.
-     status        "disponivel"  → cartão ativo, abre o endereço `url`.
+     status        "disponivel"  → cartão ativo, abre o endereço `url` (selo: portal.rotulos.disponivel).
                    "em-breve"    → cartão visível, mas sem navegação.
      url           endereço de ACESSO à aplicação (o site). Obrigatório se "disponivel".
      urlProvisoria true quando `url` ainda aponta para o repositório (ou outro destino
@@ -29,7 +29,12 @@ window.BIMOFFICE_CONFIG = {
     nome: "BIMOFFICE",
     subtitulo: "Ecossistema",
     frase: "Tecnologia e inteligência para engenharia",
-    rodape: "Setor BIM Office · SENAI/RO"
+    rodape: "Setor BIM Office · SENAI/RO",
+    // Texto exibido no selo de status de cada cartão (e nas apresentações).
+    rotulos: {
+      "disponivel": "EM VERSÃO BETA DE TESTES",
+      "em-breve": "EM BREVE"
+    }
   },
 
   apps: [

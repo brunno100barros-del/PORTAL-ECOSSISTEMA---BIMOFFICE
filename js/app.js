@@ -1,84 +1,25 @@
 /* BIMOFFICE · portal central
-   Lê js/config.js e desenha os cartões. Nenhum endereço ou texto de aplicativo
-   fica escrito aqui: para mudar qualquer um deles, edite apenas o config.js. */
+   Lê js/config.js (aplicativos) e js/conteudo.js (informações) e desenha a página.
+   Nenhum endereço ou texto de aplicativo fica escrito aqui. */
 (function () {
   "use strict";
 
   var CFG = window.BIMOFFICE_CONFIG;
-  var ICONES = window.BIMOFFICE_ICONES || {};
-  var CHAVE_TEMA = "bimoffice-tema";
+  var TXT = window.BIMOFFICE_CONTEUDO || {};
+  var U = window.BIMOFFICE_COMUM;
+  var el = U.el, svg = U.svg;
 
-  /* ---------- utilidades ---------- */
-
-  // Aceita apenas http(s); qualquer outra coisa (ou vazio) é tratada como "sem endereço".
-  function urlSegura(valor) {
-    if (typeof valor !== "string" || !valor.trim()) return "";
-    try {
-      var u = new URL(valor.trim());
-      return u.protocol === "https:" || u.protocol === "http:" ? u.href : "";
-    } catch (e) {
-      return "";
-    }
-  }
-
-  function el(tag, classe, texto) {
-    var n = document.createElement(tag);
-    if (classe) n.className = classe;
-    if (texto != null) n.textContent = texto;
-    return n;
-  }
-
-  function svg(chave) {
-    var span = el("span", "svg-wrap");
-    span.setAttribute("aria-hidden", "true");
-    span.innerHTML = ICONES[chave] || ""; // strings estáticas de js/icons.js
-    return span;
-  }
-
-  /* ---------- tema ---------- */
-
-  function lerTemaSalvo() {
-    try { return localStorage.getItem(CHAVE_TEMA); } catch (e) { return null; }
-  }
-
-  function temaAtual() {
-    return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
-  }
-
-  function aplicarTema(tema) {
-    document.documentElement.setAttribute("data-theme", tema);
-    var botao = document.getElementById("tema-botao");
-    if (botao) {
-      var escuro = tema === "dark";
-      botao.setAttribute("aria-pressed", String(escuro));
-      botao.setAttribute("aria-label", escuro ? "Mudar para o tema claro" : "Mudar para o tema escuro");
-      botao.title = botao.getAttribute("aria-label");
-      botao.replaceChildren(svg(escuro ? "sol" : "lua"));
-    }
-  }
-
-  function iniciarTema() {
-    var botao = document.getElementById("tema-botao");
-    aplicarTema(temaAtual());
-    botao.addEventListener("click", function () {
-      var novo = temaAtual() === "dark" ? "light" : "dark";
-      aplicarTema(novo);
-      try { localStorage.setItem(CHAVE_TEMA, novo); } catch (e) { /* armazenamento indisponível */ }
-    });
-    // Sem escolha salva, acompanha o sistema operacional.
-    if (window.matchMedia) {
-      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (ev) {
-        if (!lerTemaSalvo()) aplicarTema(ev.matches ? "dark" : "light");
-      });
-    }
+  function temApresentacao(app) {
+    var c = TXT[app.id];
+    return !!(c && !c.emBreve && c.fluxo && c.destaques && U.disponivel(app));
   }
 
   /* ---------- cartões ---------- */
 
   function criarCartao(app, indice) {
-    var urlApp = urlSegura(app.url);
-    var urlRepo = urlSegura(app.repositorio);
-    var disponivel = app.status === "disponivel" && !!urlApp;
+    var urlApp = U.urlSegura(app.url);
+    var urlRepo = U.urlSegura(app.repositorio);
+    var disponivel = U.disponivel(app);
     var provisoria = disponivel && app.urlProvisoria === true;
 
     var cartao = el("article", "card " + (disponivel ? "card--ativo" : "card--breve"));
@@ -107,13 +48,12 @@
       titulo.textContent = app.nome;
     }
     cartao.appendChild(titulo);
-
     cartao.appendChild(el("p", "card__desc", app.descricao));
 
     var base = el("div", "card__base");
     var status = el("span", "status " + (disponivel ? "status--ativo" : "status--breve"));
     status.appendChild(el("i", "status__ponto"));
-    status.appendChild(document.createTextNode(disponivel ? "DISPONÍVEL" : "EM BREVE"));
+    status.appendChild(document.createTextNode(U.rotuloStatus(disponivel)));
     base.appendChild(status);
 
     if (disponivel) {
@@ -147,6 +87,51 @@
     grade.replaceChildren.apply(grade, CFG.apps.map(criarCartao));
   }
 
+  /* ---------- informações: o que cada produto faz ---------- */
+
+  function criarLinhaInfo(app) {
+    var c = TXT[app.id] || {};
+    var disponivel = U.disponivel(app);
+    var linha = el("article", "info rev");
+    linha.dataset.app = app.id;
+
+    var tile = el("div", "info__icone");
+    tile.appendChild(svg(app.icone));
+    linha.appendChild(tile);
+
+    var corpo = el("div", "info__corpo");
+    var cab = el("div", "info__cab");
+    cab.appendChild(el("h3", "info__nome", app.nome));
+    var st = el("span", "status " + (disponivel ? "status--ativo" : "status--breve"));
+    st.appendChild(el("i", "status__ponto"));
+    st.appendChild(document.createTextNode(U.rotuloStatus(disponivel)));
+    cab.appendChild(st);
+    corpo.appendChild(cab);
+    corpo.appendChild(el("p", "info__texto", c.oQueFaz || app.descricao));
+
+    var chips = el("ul", "chips");
+    (c.chips || []).forEach(function (t) { chips.appendChild(el("li", "chip", t)); });
+    corpo.appendChild(chips);
+    linha.appendChild(corpo);
+
+    var acao = el("div", "info__acao");
+    if (temApresentacao(app)) {
+      var a = el("a", "btn btn--sec", "Ver apresentação");
+      a.href = "apresentacao.html#" + encodeURIComponent(app.id);
+      a.appendChild(svg("seta"));
+      acao.appendChild(a);
+    } else {
+      acao.appendChild(el("span", "info__breve", "Apresentação em breve"));
+    }
+    linha.appendChild(acao);
+    return linha;
+  }
+
+  function desenharInformacoes() {
+    var lista = document.getElementById("info-lista");
+    lista.replaceChildren.apply(lista, CFG.apps.map(criarLinhaInfo));
+  }
+
   /* ---------- textos do portal ---------- */
 
   function saudacao() {
@@ -164,7 +149,24 @@
     document.getElementById("subtitulo").textContent = P.subtitulo;
   }
 
-  /* ---------- início ---------- */
+  /* ---------- navegação: destaca a seção visível ---------- */
+
+  function iniciarNavegacao() {
+    var links = Array.prototype.slice.call(document.querySelectorAll(".nav__link"));
+    if (!("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (l) {
+          l.setAttribute("aria-current", l.getAttribute("href") === "#" + e.target.id ? "true" : "false");
+        });
+      });
+    }, { rootMargin: "-35% 0px -55% 0px" });
+    links.forEach(function (l) {
+      var alvo = document.querySelector(l.getAttribute("href"));
+      if (alvo) io.observe(alvo);
+    });
+  }
 
   function iniciar() {
     if (!CFG || !Array.isArray(CFG.apps)) {
@@ -173,7 +175,10 @@
     }
     preencherTextos();
     desenharCartoes();
-    iniciarTema();
+    desenharInformacoes();
+    U.iniciarTema();
+    U.revelar();
+    iniciarNavegacao();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar);
