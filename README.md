@@ -32,7 +32,7 @@ Edite **somente `js/config.js`**. Cada aplicativo tem três informações separa
 - `status`: `"disponivel"` ou `"em-breve"`.
 
 Exemplos:
-- **COORDIX publicado no GitHub Pages:** troque `url` por `https://brunno100barros-del.github.io/COORDIX/` e apague `urlProvisoria: true`.
+- **Aplicativo ainda sem página publicada:** use o repositório em `url` e marque `urlProvisoria: true`; o cartão passa a mostrar "Repositório" em vez de "Acessar".
 - **Liberar o Vision:** informe `url` e `repositorio` e mude `status` para `"disponivel"`.
 - **Novo aplicativo:** copie um bloco de `apps` e ajuste os campos (e, se quiser um ícone próprio, adicione-o em `js/icons.js`).
 

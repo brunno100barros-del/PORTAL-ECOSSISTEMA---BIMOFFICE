@@ -38,11 +38,7 @@ window.BIMOFFICE_CONFIG = {
       nome: "COORDIX",
       descricao: "Inteligência e coordenação BIM para análise de interferências e conflitos em modelos IFC.",
       status: "disponivel",
-      // Sem página publicada confirmada: destino provisório = repositório.
-      // Ao publicar no GitHub Pages, use: "https://brunno100barros-del.github.io/COORDIX/"
-      // e remova a linha `urlProvisoria`.
-      url: "https://github.com/brunno100barros-del/COORDIX",
-      urlProvisoria: true,
+      url: "https://brunno100barros-del.github.io/COORDIX/",
       repositorio: "https://github.com/brunno100barros-del/COORDIX",
       icone: "coordix"
     },
@@ -51,8 +47,7 @@ window.BIMOFFICE_CONFIG = {
       nome: "KNOWLEDGE",
       descricao: "Plataforma de inteligência para engenharia, organização de conhecimento técnico e pesquisa semântica.",
       status: "disponivel",
-      // Página publicada informada no README do próprio repositório do Knowledge.
-      // Se ainda não estiver ativa, use temporariamente o repositório e marque urlProvisoria: true.
+      // Se uma página deixar de existir, use temporariamente o repositório e marque urlProvisoria: true.
       url: "https://brunno100barros-del.github.io/BIMOFFICE-Knowledge/",
       repositorio: "https://github.com/brunno100barros-del/BIMOFFICE-Knowledge",
       icone: "knowledge"
