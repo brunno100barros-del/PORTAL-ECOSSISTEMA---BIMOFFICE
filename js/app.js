@@ -50,6 +50,17 @@
     cartao.appendChild(titulo);
     cartao.appendChild(el("p", "card__desc", app.descricao));
 
+    // Destaque que leva à apresentação do produto. É um link irmão do link principal
+    // (nunca aninhado) e fica acima da área clicável do cartão.
+    if (temApresentacao(app)) {
+      var saibaMais = el("a", "card__info");
+      saibaMais.href = "apresentacao.html#" + encodeURIComponent(app.id);
+      saibaMais.appendChild(el("span", "card__info-texto", "Entenda a funcionalidade do programa clicando aqui"));
+      saibaMais.appendChild(svg("seta"));
+      saibaMais.setAttribute("aria-label", "Entenda a funcionalidade do " + app.nome + ": abrir a apresentação");
+      cartao.appendChild(saibaMais);
+    }
+
     var base = el("div", "card__base");
     var status = el("span", "status " + (disponivel ? "status--ativo" : "status--breve"));
     status.appendChild(el("i", "status__ponto"));

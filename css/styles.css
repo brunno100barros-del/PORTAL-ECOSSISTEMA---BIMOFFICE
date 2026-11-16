@@ -335,3 +335,24 @@ html { scroll-behavior: smooth; }
   .topo__frase { order: 4; }
   .tema { margin-left: auto; }
 }
+
+/* destaque "entenda a funcionalidade" nos cartões */
+.card__info {
+  position: relative; z-index: 2; align-self: flex-start; margin-top: 8px;
+  display: inline-flex; align-items: center; gap: 10px; max-width: 100%;
+  padding: 11px 16px; border-radius: 14px; text-decoration: none;
+  font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  box-shadow: 0 8px 20px -12px var(--accent);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), background-color .2s, color .2s;
+}
+.card__info .svg-wrap, .card__info svg { width: 16px; height: 16px; display: block; flex: none; }
+.card__info .svg-wrap { transition: transform .3s var(--ease); }
+.card__info:hover { transform: translateY(-2px); color: var(--accent-ink); background: var(--accent); box-shadow: 0 12px 26px -12px var(--accent); }
+.card__info:hover .svg-wrap { transform: translate(2px, -2px); }
+.card__info:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+/* selo de status nunca quebra linha; o indicador de acesso desce se faltar espaço */
+.status { white-space: nowrap; }
+.card__base { flex-wrap: wrap; row-gap: 12px; }
+@media (max-width: 480px) { .status { font-size: 10.5px; padding: 0 10px; letter-spacing: .06em; } }
