@@ -58,6 +58,15 @@ window.BIMOFFICE_CONFIG = {
       icone: "knowledge"
     },
     {
+      id: "schedule",
+      nome: "SCHEDULE",
+      descricao: "Planejamento, análise e simulação de obras de engenharia, integrando o planejamento tradicional com modelos BIM.",
+      status: "disponivel",
+      url: "https://brunno100barros-del.github.io/BIM-SCHEDULE/",
+      repositorio: "https://github.com/brunno100barros-del/BIM-SCHEDULE",
+      icone: "schedule"
+    },
+    {
       id: "vision",
       nome: "VISION",
       descricao: "Inteligência visual aplicada à engenharia. Análise de fotografias de obras, identificação assistida de patologias, infiltrações, fissuras e falhas construtivas.",

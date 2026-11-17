@@ -22,6 +22,11 @@
       '<path d="M24 7 6 16l18 9 18-9z"/><path d="m6 24 18 9 18-9"/><path d="m6 32 18 9 18-9"/>' +
       '<circle class="ic-accent" cx="24" cy="16" r="2.2" fill="currentColor" stroke="none"/></svg>',
 
+    schedule:
+      '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<rect x="7" y="10" width="34" height="31" rx="6"/><path d="M7 19h34M16 6v7M32 6v7"/>' +
+      '<path d="M14 26h11M19 32h15"/><circle class="ic-accent" cx="33" cy="26" r="2.2" fill="currentColor" stroke="none"/></svg>',
+
     vision:
       '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
       '<path d="M8 17v-6a3 3 0 0 1 3-3h6M31 8h6a3 3 0 0 1 3 3v6M40 31v6a3 3 0 0 1-3 3h-6M17 40h-6a3 3 0 0 1-3-3v-6"/>' +

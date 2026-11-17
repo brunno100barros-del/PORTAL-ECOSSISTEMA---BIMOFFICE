@@ -356,3 +356,16 @@ html { scroll-behavior: smooth; }
 .status { white-space: nowrap; }
 .card__base { flex-wrap: wrap; row-gap: 12px; }
 @media (max-width: 480px) { .status { font-size: 10.5px; padding: 0 10px; letter-spacing: .06em; } }
+
+/* ===== grade de cartões para qualquer quantidade de aplicativos ===== */
+@media (min-width: 1000px) {
+  .apps { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .apps > .card { grid-column: span 2; }
+  /* última linha incompleta: os cartões restantes dividem a largura */
+  .apps > .card:nth-last-child(2):nth-child(3n + 1) { grid-column: span 3; }
+  .apps > .card:last-child:nth-child(3n + 2) { grid-column: span 3; }
+  .apps > .card:last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+}
+@media (min-width: 701px) and (max-width: 999px) {
+  .apps > .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}

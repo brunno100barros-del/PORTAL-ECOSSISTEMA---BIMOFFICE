@@ -7,10 +7,11 @@ O portal **não executa** nenhum aplicativo, não usa iframe e não depende de n
 
 | # | Aplicativo | Status |
 |---|---|---|
-| 01 | COORDIX | Disponível |
-| 02 | KNOWLEDGE | Disponível |
-| 03 | VISION | Em breve |
-| 04 | GENERATOR | Em breve |
+| 01 | COORDIX | Disponível (beta) |
+| 02 | KNOWLEDGE | Disponível (beta) |
+| 03 | SCHEDULE | Disponível (beta) |
+| 04 | VISION | Em breve |
+| 05 | GENERATOR | Em breve |
 
 ## Tecnologia
 HTML, CSS e JavaScript puros, sem dependências, sem etapa de build. Única chamada externa: fontes IBM Plex (Google Fonts), com fallback para fontes do sistema.
@@ -46,7 +47,7 @@ Cartões "em breve" nunca navegam, mesmo que haja `url` preenchida.
 O texto do selo de status fica em `portal.rotulos` (hoje: "EM VERSÃO BETA DE TESTES" para os disponíveis e "EM BREVE").
 
 ## Informações e apresentações
-O menu **Informações** lista o que cada produto faz. COORDIX e KNOWLEDGE têm uma mini apresentação (`apresentacao.html#<id>`) com fluxo, destaques, números e limites conhecidos. Para editar textos ou criar a apresentação de um novo aplicativo, use `js/conteudo.js` (a chave é o `id` do aplicativo; basta ter `fluxo` e `destaques`). As ilustrações das apresentações usam dados fictícios e vivem em `js/apresentacao.js`.
+O menu **Informações** lista o que cada produto faz. COORDIX, KNOWLEDGE e SCHEDULE têm uma mini apresentação (`apresentacao.html#<id>`) com fluxo, destaques, números e limites conhecidos. Para editar textos ou criar a apresentação de um novo aplicativo, use `js/conteudo.js` (a chave é o `id` do aplicativo; basta ter `fluxo` e `destaques`). As ilustrações das apresentações usam dados fictícios e vivem em `js/apresentacao.js`.
 
 ## Publicar no GitHub Pages
 *Settings → Pages → Branch: `main` → pasta `/ (root)`*. O arquivo `.nojekyll` já está incluído. Para outro provedor, basta copiar a pasta inteira.

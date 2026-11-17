@@ -95,6 +95,40 @@ window.BIMOFFICE_CONTEUDO = {
     ]
   },
 
+  schedule: {
+    visual: "schedule",
+    chips: ["Planejamento de obras", "Modelos IFC", "Visualizador 3D"],
+    slogan: "Planejamento de obras conectado ao modelo BIM.",
+    oQueFaz: "Reúne o planejamento tradicional de obras e o modelo BIM no mesmo lugar: cadastra o projeto, recebe o IFC e mostra o modelo em 3D, preparando a base para cronograma e simulação.",
+    resumo: "O SCHEDULE reúne o planejamento tradicional de obras e o modelo BIM no mesmo lugar. Hoje ele organiza os projetos, recebe o modelo IFC, extrai os elementos e mostra tudo em 3D no navegador. O cronograma e a simulação 4D estão previstos para as próximas fases.",
+    pontos: [
+      { t: "Projeto e modelo juntos", d: "Cada projeto guarda seus dados (código, cliente, datas e status) e os modelos IFC enviados para ele." },
+      { t: "Modelo 3D no navegador", d: "Visualizador interativo para conferir o modelo enviado, sem instalar programa de modelagem." },
+      { t: "Dados lidos do IFC", d: "Um processador nativo em Python extrai metadados, GlobalId e o tipo de cada elemento." }
+    ],
+    fluxo: [
+      { t: "Criar o projeto", d: "Informe código, nome, cliente, datas e status. Dá para editar, duplicar e excluir projetos." },
+      { t: "Enviar o IFC", d: "O modelo é anexado ao projeto e pode ser baixado de novo quando necessário." },
+      { t: "Extrair os elementos", d: "O processador lê o arquivo e guarda metadados, GlobalId e tipos dos elementos." },
+      { t: "Ver em 3D", d: "O visualizador abre o modelo no navegador, em modo claro ou escuro." },
+      { t: "Planejar e simular", d: "Gráfico de Gantt, CPM e simulação BIM 4D já têm lugar no menu e serão implementados nas próximas fases." }
+    ],
+    destaques: [
+      { t: "Visualizador 3D de IFC", d: "Baseado em Three.js e Web-IFC, abre o modelo direto no navegador.", tam: 4 },
+      { t: "Gestão de projetos", d: "Criar, editar, duplicar e excluir.", tam: 2 },
+      { t: "Elementos com GlobalId", d: "Cada elemento do modelo é registrado com seu identificador e tipo.", tam: 2 },
+      { t: "Parte do ecossistema", d: "Nasce com a mesma identidade do BIMOFFICE e evolui como um aplicativo independente.", tam: 4 },
+      { t: "Instalação simples no Windows", d: "Dois arquivos, install e start, preparam e abrem os servidores locais.", tam: 3 },
+      { t: "Visão 4D no horizonte", d: "Cronograma CPM, simulação 4D e análise orçamentária fazem parte do plano do produto.", tam: 3 }
+    ],
+    limites: [
+      "Em versão beta de testes (v0.2).",
+      "Gráfico de Gantt, CPM e simulação BIM 4D ainda não estão implementados.",
+      "A análise orçamentária também está prevista para fases futuras.",
+      "Salvar projetos e processar IFC depende do servidor local em Python (install.bat e start.bat)."
+    ]
+  },
+
   vision: {
     emBreve: true,
     chips: ["Fotos de obra", "Patologias", "Análise assistida"],

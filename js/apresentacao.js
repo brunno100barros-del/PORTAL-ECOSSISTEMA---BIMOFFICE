@@ -25,9 +25,9 @@
 
   /* ---------- ilustrações (dados fictícios, só para ilustrar) ---------- */
 
-  // Cena isométrica: uma viga (azul) atravessada por um duto (cobre); a interseção em vermelho.
-  function cenaCoordix() {
-    var s = 34, ox = 360, oy = 96, k = Math.cos(Math.PI / 6);
+  // Kit isométrico: converte (x, y, z) em pontos da tela e desenha prismas com 3 faces.
+  function kitIso(s, ox, oy) {
+    var k = Math.cos(Math.PI / 6);
     function P(x, y, z) { return [(ox + (x - y) * k * s).toFixed(1), (oy + (x + y) * 0.5 * s - z * s).toFixed(1)].join(","); }
     function poly(pts, fill, extra) { return '<polygon points="' + pts.map(function (p) { return P(p[0], p[1], p[2]); }).join(" ") + '" fill="' + fill + '" ' + (extra || "") + "/>"; }
     function box(x0, x1, y0, y1, z0, z1, c, extra) {
@@ -35,18 +35,40 @@
              poly([[x1, y0, z0], [x1, y1, z0], [x1, y1, z1], [x1, y0, z1]], c[2], extra) +
              poly([[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], c[1], extra);
     }
-    var grade = "";
-    for (var i = 0; i <= 8; i++) {
-      grade += '<polyline points="' + P(i, 0, 0) + " " + P(i, 8, 0) + '" />' + '<polyline points="' + P(0, i, 0) + " " + P(8, i, 0) + '" />';
+    function grade(n) {
+      var g = "";
+      for (var i = 0; i <= n; i++) g += '<polyline points="' + P(i, 0, 0) + " " + P(i, n, 0) + '" />' + '<polyline points="' + P(0, i, 0) + " " + P(n, i, 0) + '" />';
+      return '<g fill="none" stroke="var(--mock-grid)" stroke-width="1">' + g + "</g>";
     }
-    var azul = ["#7fb0ee", "#5b92d6", "#4677b6"], cobre = ["#f3a468", "#de7d43", "#b8602c"], verm = ["#ff8a82", "#f0625a", "#c9443d"];
+    return { P: P, box: box, grade: grade };
+  }
+
+  var AZUL = ["#7fb0ee", "#5b92d6", "#4677b6"], COBRE = ["#f3a468", "#de7d43", "#b8602c"], VERM = ["#ff8a82", "#f0625a", "#c9443d"], CINZA = ["#c3cad4", "#a3adba", "#8893a1"];
+
+  // COORDIX: uma viga (azul) atravessada por um duto (cobre); a interseção em vermelho.
+  function cenaCoordix() {
+    var t = kitIso(34, 360, 96), c = t.P(4.1, 3.1, 2.7).split(",");
     return '<svg class="mock__cena" viewBox="0 0 720 400" role="img" aria-label="Ilustração: uma viga e um duto se cruzando, com a interseção destacada">' +
-      '<g fill="none" stroke="var(--mock-grid)" stroke-width="1">' + grade + "</g>" +
-      box(0.6, 7.4, 2.6, 3.6, 2, 3, azul) +
-      box(3.6, 4.6, 0.6, 7.2, 2.4, 3.4, cobre, 'opacity=".92"') +
-      box(3.6, 4.6, 2.6, 3.6, 2.4, 3, verm) +
-      '<circle cx="' + P(4.1, 3.1, 2.7).split(",")[0] + '" cy="' + P(4.1, 3.1, 2.7).split(",")[1] + '" r="30" fill="none" stroke="#f0625a" stroke-width="1.5" stroke-dasharray="4 5" opacity=".9"/>' +
-      "</svg>";
+      t.grade(8) +
+      t.box(0.6, 7.4, 2.6, 3.6, 2, 3, AZUL) +
+      t.box(3.6, 4.6, 0.6, 7.2, 2.4, 3.4, COBRE, 'opacity=".92"') +
+      t.box(3.6, 4.6, 2.6, 3.6, 2.4, 3, VERM) +
+      '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="30" fill="none" stroke="#f0625a" stroke-width="1.5" stroke-dasharray="4 5" opacity=".9"/></svg>';
+  }
+
+  // SCHEDULE: edifício de três pavimentos (modelo IFC), com um pavimento destacado.
+  function cenaSchedule() {
+    var t = kitIso(30, 360, 124), x = [1, 6.5], y = [1, 5.4], out = t.grade(8);
+    for (var n = 0; n < 3; n++) {
+      var z0 = n * 2 + 0.35, z1 = n * 2 + 2;
+      if (n > 0) out += t.box(1, 7, 1, 6, n * 2, n * 2 + 0.35, n === 1 ? COBRE : CINZA, 'opacity=".9"');
+      else out += t.box(1, 7, 1, 6, 0, 0.35, CINZA);
+      if (n < 2) [[x[0], y[0]], [x[1], y[0]], [x[0], y[1]], [x[1], y[1]]].forEach(function (c) {
+        out += t.box(c[0], c[0] + 0.5, c[1], c[1] + 0.5, z0, z1, AZUL);
+      });
+    }
+    out += t.box(1, 7, 1, 6, 4, 4.35, CINZA, 'opacity=".9"');
+    return '<svg class="mock__cena" viewBox="0 0 720 400" role="img" aria-label="Ilustração: modelo de um edifício de três pavimentos, com um pavimento destacado">' + out + "</svg>";
   }
 
   function visualCoordix() {
@@ -54,6 +76,14 @@
       '<div class="flutua flutua--a"><b><span class="dot"></span>CLASH · P1</b><small>Estrutura × Hidráulica · Pav. 02</small></div>' +
       '<div class="flutua flutua--c"><b>Câmera no conflito</b><small>A em vermelho · B em azul</small></div>' +
       '<div class="flutua flutua--b"><b><span class="dot dot--ok"></span>Validado</b><small>Vira issue com prazo e responsável</small></div>' +
+      "</div>";
+  }
+
+  function visualSchedule() {
+    return '<div class="mock">' + cenaSchedule() +
+      '<div class="flutua flutua--a"><b><span class="dot dot--ok"></span>Modelo IFC carregado</b><small>Elementos extraídos com GlobalId</small></div>' +
+      '<div class="flutua flutua--c"><b>Pavimento selecionado</b><small>Visualização 3D interativa</small></div>' +
+      '<div class="flutua flutua--b"><b>Gantt, CPM e 4D</b><small>Próximas fases do SCHEDULE</small></div>' +
       "</div>";
   }
 
@@ -74,7 +104,7 @@
       "</div></div>";
   }
 
-  var VISUAIS = { coordix: visualCoordix, knowledge: visualKnowledge };
+  var VISUAIS = { coordix: visualCoordix, knowledge: visualKnowledge, schedule: visualSchedule };
 
   /* ---------- seções ---------- */
 
@@ -131,11 +161,11 @@
   }
 
   function htmlFinal() {
-    var outroId = id === "coordix" ? "knowledge" : "coordix";
-    var outroApp = (CFG.apps || []).filter(function (a) { return a.id === outroId; })[0];
-    var outroTxt = TXT[outroId];
-    var outro = outroApp && outroTxt && !outroTxt.emBreve && outroTxt.fluxo && U.disponivel(outroApp)
-      ? '<p class="final__outro">Conheça também o <a href="apresentacao.html#' + esc(outroId) + '">' + esc(outroApp.nome) + "</a>.</p>" : "";
+    var outros = (CFG.apps || []).filter(function (x) {
+      var t = TXT[x.id];
+      return x.id !== id && t && !t.emBreve && t.fluxo && U.disponivel(x);
+    }).map(function (x) { return '<a href="apresentacao.html#' + esc(x.id) + '">' + esc(x.nome) + "</a>"; });
+    var outro = outros.length ? '<p class="final__outro">Conheça também: ' + outros.join(" · ") + ".</p>" : "";
     return '<section class="final rev"><h2>Experimente na versão beta de testes.</h2>' +
       "<p>" + esc(app.nome) + " está em evolução. Use, teste e diga o que melhorar.</p>" +
       '<div class="hero2__acoes">' +
