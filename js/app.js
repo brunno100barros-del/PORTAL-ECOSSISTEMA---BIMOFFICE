@@ -143,6 +143,33 @@
     lista.replaceChildren.apply(lista, CFG.apps.map(criarLinhaInfo));
   }
 
+  /* ---------- olho do COORDIX: identidade visual da abertura ---------- */
+
+  function iniciarOlho() {
+    var tile = document.getElementById("olho-hero");
+    var arte = document.getElementById("olho-arte");
+    if (!tile || !arte) return;
+    arte.innerHTML = (window.BIMOFFICE_ICONES || {}).coordixOlho || ""; // SVG estático de js/icons.js
+    var svgEl = arte.querySelector("svg");
+    if (svgEl) { svgEl.removeAttribute("aria-hidden"); svgEl.setAttribute("role", "img"); svgEl.setAttribute("aria-label", "Olho, símbolo do COORDIX"); }
+    var reduzido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduzido) return;
+
+    var quadro = 0;
+    document.addEventListener("pointermove", function (ev) {
+      if (quadro) return;
+      quadro = requestAnimationFrame(function () {
+        quadro = 0;
+        var r = tile.getBoundingClientRect();
+        var dx = (ev.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2);
+        var dy = (ev.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2);
+        tile.classList.add("segue");
+        tile.style.setProperty("--dx", Math.max(-1, Math.min(1, dx)).toFixed(3));
+        tile.style.setProperty("--dy", Math.max(-1, Math.min(1, dy)).toFixed(3));
+      });
+    }, { passive: true });
+  }
+
   /* ---------- textos do portal ---------- */
 
   function saudacao() {
@@ -190,6 +217,7 @@
     U.iniciarTema();
     U.revelar();
     iniciarNavegacao();
+    iniciarOlho();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar);

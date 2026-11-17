@@ -369,3 +369,46 @@ html { scroll-behavior: smooth; }
 @media (min-width: 701px) and (max-width: 999px) {
   .apps > .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
+
+/* ===== abertura com o olho do COORDIX ===== */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 400px); align-items: center; gap: clamp(20px, 5vw, 64px); }
+.hero .boas-vindas { max-width: 640px; }
+
+.olho-hero {
+  position: relative; margin: 0; padding: clamp(18px, 3vw, 30px) clamp(16px, 2.6vw, 28px) 16px; border-radius: 36px; text-align: center;
+  background:
+    radial-gradient(70% 60% at 50% 38%, var(--glow-1), transparent 72%),
+    var(--glass);
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow: var(--shadow-card), 0 40px 70px -40px rgba(168, 77, 28, .45);
+  animation: subir .8s var(--ease) .15s both;
+}
+.olho-hero__arte { animation: respirar 7s ease-in-out infinite; }
+.olho-hero svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 14px 22px rgba(16, 20, 28, .25)); }
+.olho-hero figcaption { margin-top: 12px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+
+/* cores do símbolo (mesmos papéis do original) */
+.olho-hero .olho-tinta { fill: var(--ink); }
+.olho-hero .olho-inferior { fill: none; stroke: var(--ink); opacity: .55; }
+.olho-hero .olho-iris { fill: var(--iris); }
+.olho-hero .olho-limbo { stroke: var(--limbo); }
+.olho-hero .olho-pupila { fill: var(--pupila); }
+.olho-hero .olho-brilho { fill: #fff; }
+
+/* a íris acompanha o ponteiro; sem ponteiro, o olho "passeia" devagar */
+.olho-mov { transform: translate(calc(var(--dx, 0) * 3.2px), calc(var(--dy, 0) * 1.5px)); transition: transform .18s ease-out; }
+.olho-hero:not(.segue) .olho-mov { animation: olhar 11s ease-in-out infinite; }
+@keyframes olhar {
+  0%, 100% { transform: translate(0, 0); }
+  22% { transform: translate(-2.6px, -.6px); }
+  46% { transform: translate(2.4px, .5px); }
+  70% { transform: translate(.6px, 1.1px); }
+}
+@keyframes respirar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) { .olho-hero__arte, .olho-mov { animation: none !important; } }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; }
+  .olho-hero { order: -1; width: min(300px, 78%); justify-self: center; margin-top: 8px; }
+}
